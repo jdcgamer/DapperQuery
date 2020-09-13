@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO.Pipes;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -32,5 +33,15 @@ namespace Dapper.Query
     public interface IGroupByClause : IClause
     {
         IClause Having(Predicate predicate);
+    }
+
+    public interface IColumnOwner
+    {
+        string Name { get; set; }
+        string Alias { get; }
+        IList<Column> Columns { get; }
+        Column Star { get; }
+        void AddColumn(Column column);
+        IColumnOwner As(string alias);
     }
 }

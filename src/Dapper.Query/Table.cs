@@ -5,20 +5,11 @@ using System.Threading.Tasks;
 
 namespace Dapper.Query
 {
-    public class Table
+    public class Table : ColumnOwner
     {
-        public string TableName { get; private set; }
-        public Column Star { get; private set; }
 
-        protected Table(string tableName)
-        {
-            this.TableName = tableName;
-            this.Star = new Column(this, "*");
-        }
+        protected Table(string tableName) : base(tableName)
+        { }
 
-        public override string ToString()
-        {
-            return this.TableName;
-        }
     }
 }

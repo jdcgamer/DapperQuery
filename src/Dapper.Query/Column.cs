@@ -11,7 +11,7 @@ namespace Dapper.Query
 
         public ColumnType ColumnType { get; protected set; }
         public string Name { get; protected set; }
-        public Table ParentTable { get; protected set; } // todo: parent does not have to be a table, let it be IRecordSource. IRecordSource shoud have a name and alias. SelectStatement shoud be IRecordSource too.
+        public IColumnOwner Parent { get; protected set; }
         public SelectStatement SelectStatement { get; protected set; }
         public object Value { get; protected set; }
 
@@ -22,17 +22,12 @@ namespace Dapper.Query
         protected Column()
         { }
 
-        public Column(Table parentTable, string name)
+        public Column(IColumnOwner parent, string name)
         {
             this.ColumnType = ColumnType.TableColumn;
-            this.ParentTable = parentTable;
             this.Name = name;
-        }
-
-        public Column(SelectStatement selectStatement)
-        {
-            this.ColumnType = ColumnType.SelectStatement;
-            this.SelectStatement = selectStatement;
+            this.Parent = parent;
+            this.Parent.AddColumn(this);
         }
 
         public Column(object value)
@@ -89,7 +84,7 @@ namespace Dapper.Query
 
         //public Predicate In(params Column[] values)
         //{
-            
+
         //}
 
         #endregion
@@ -193,7 +188,7 @@ namespace Dapper.Query
             if (obj is Column)
             {
                 Column columnToCompare = (Column)obj;
-                return this.ParentTable == columnToCompare.ParentTable && this.Name == columnToCompare.Name;
+                return this.Parent == columnToCompare.Parent && this.Name == columnToCompare.Name;
             }
             return false;
         }
