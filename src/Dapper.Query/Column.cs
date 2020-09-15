@@ -13,7 +13,7 @@ namespace Dapper.Query
         public string Name { get; protected set; }
         public IColumnOwner Parent { get; protected set; }
         public SelectStatement SelectStatement { get; protected set; }
-        public object Value { get; protected set; }
+        public object Value { get; set; }
 
         #endregion
 
@@ -195,7 +195,7 @@ namespace Dapper.Query
 
         public override int GetHashCode()
         {
-            return (this.ParentTable?.TableName + "." + this.Name).GetHashCode();
+            return (this.Parent?.Name + "." + this.Name).GetHashCode();
         }
 
         public override string ToString()
@@ -203,7 +203,7 @@ namespace Dapper.Query
             switch (this.ColumnType)
             {
                 case ColumnType.TableColumn:
-                    return this.ParentTable?.TableName + "." + this.Name;
+                    return this.Parent?.Name + "." + this.Name;
                 case ColumnType.SelectStatement:
                     return "inner query";
                 case ColumnType.SqlFunction:

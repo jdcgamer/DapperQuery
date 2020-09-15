@@ -5,12 +5,12 @@ using System.Threading.Tasks;
 
 namespace Dapper.Query
 {
-    public class SelectStatement : StatementBase, IClause, ISelectClause, IFromClause, IWhereClause, IGroupByClause
+    public class SelectStatement : StatementBase, IClause, ISelectClause, IFromClause, IWhereClause, IGroupByClause, IColumnOwner
     {
         public bool IsDistinct { get; private set; }
         public int TopCount { get; private set; }
         public List<Column> SelectedColumns { get; private set; }
-        public Table FromTable { get; private set; }
+        public IColumnOwner FromSource { get; private set; }
         public List<JoinClause> Joins { get; private set; }
         public Predicate WherePredicate { get; private set; }
         public List<Column> GroupByColumns { get; private set; }
@@ -25,6 +25,22 @@ namespace Dapper.Query
             this.OrderByColumns = new List<OrderByColumn>();
         }
 
+        #region IColumnOwner members
+
+        string IColumnOwner.Name { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        string IColumnOwner.Alias => throw new NotImplementedException();
+        IList<Column> IColumnOwner.Columns => throw new NotImplementedException();
+        Column IColumnOwner.Star => throw new NotImplementedException();
+        void IColumnOwner.AddColumn(Column column)
+        {
+            throw new NotImplementedException();
+        }
+        IColumnOwner IColumnOwner.As(string alias)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
 
         public ISelectClause Select(params Column[] columns)
         {
@@ -53,7 +69,7 @@ namespace Dapper.Query
 
         public IFromClause From(Table table)
         {
-            this.FromTable = table;
+            this.FromSource = table;
             return this;
         }
 
@@ -116,5 +132,6 @@ namespace Dapper.Query
             this.OrderByColumns.AddRange(orderByColumns);
             return this;
         }
+
     }
 }
