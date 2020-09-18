@@ -6,18 +6,14 @@ namespace Dapper.Query
 {
     public class ColumnOwner : IColumnOwner
     {
-        private string _alias;
         protected IList<Column> Columns = new List<Column>();
-        string IColumnOwner.Name { get; set; }
+        private string _alias;
         string IColumnOwner.Alias => _alias;
         IList<Column> IColumnOwner.Columns => this.Columns;
         public Column Star { get; private set; }
 
-        public ColumnOwner() : this(null) { }
-
-        public ColumnOwner(string name)
+        public ColumnOwner()
         {
-            ((IColumnOwner)this).Name = name;
             this.Star = new Column(this, "*");
         }
 

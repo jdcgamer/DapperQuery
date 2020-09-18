@@ -27,7 +27,6 @@ namespace Dapper.Query
 
         #region IColumnOwner members
 
-        string IColumnOwner.Name { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         string IColumnOwner.Alias => throw new NotImplementedException();
         IList<Column> IColumnOwner.Columns => throw new NotImplementedException();
         Column IColumnOwner.Star => throw new NotImplementedException();

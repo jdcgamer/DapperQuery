@@ -37,11 +37,15 @@ namespace Dapper.Query
 
     public interface IColumnOwner
     {
-        string Name { get; set; }
         string Alias { get; }
         IList<Column> Columns { get; }
         Column Star { get; }
         void AddColumn(Column column);
         IColumnOwner As(string alias);
+    }
+
+    public interface ITable
+    {
+        string Name { get; set; }
     }
 }
